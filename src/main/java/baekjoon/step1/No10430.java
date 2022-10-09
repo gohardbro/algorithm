@@ -2,14 +2,18 @@ package baekjoon.step1;
 
 import java.util.Scanner;
 
-//나머지
-//아직 안풀었음
 public class No10430 {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int a = scanner.nextInt();
+        int A = scanner.nextInt();
+        int B = scanner.nextInt();
+        int C = scanner.nextInt();
 
+        System.out.println((A+B)%C);
+        System.out.println((A%C+B%C)%C);
+        System.out.println((A*B)%C);
+        System.out.println((A%C*B%C)%C);
 
     }
 }
