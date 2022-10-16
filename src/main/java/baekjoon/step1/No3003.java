@@ -7,7 +7,7 @@ public class No3003 {
 
     public static void main(String[] args) {
 
-        //bufferedReader 사용해서 한줄에서 입력 시도해보자
+        //bufferedReader 사용해서 한줄에서 입력 시도 해보자
 
         int king, queen, look, bishop, knight, pawn;
         Scanner scanner = new Scanner(System.in);
