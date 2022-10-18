@@ -6,27 +6,24 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 // 최소, 최대
-// + 최적화
-public class No10818_2 {
+public class No10818 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(br.readLine());
-        StringTokenizer st = new StringTokenizer(br.readLine());
-
-        int min = 1000000;
-        int max = -1000000;
-
-        while (n-- > 0) {
-            int no = Integer.parseInt(st.nextToken());
-            if (no < min) {
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        int no = Integer.parseInt(st.nextToken());
+        int max = no;
+        int min = no;
+        while (st.hasMoreTokens()) {
+            no = Integer.parseInt(st.nextToken());
+            if (min > no) {
                 min = no;
             }
-            if (no > max) {
+
+            if(max < no) {
                 max = no;
             }
         }
-        StringBuilder sb = new StringBuilder();
-        sb.append(min).append(" ").append(max);
-        System.out.println(sb);
+        System.out.println(min + " " + max);
     }
 }
