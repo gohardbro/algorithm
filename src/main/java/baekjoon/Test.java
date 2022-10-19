@@ -4,14 +4,22 @@ import java.util.Arrays;
 
 public class Test {
     public static void main(String[] args) {
-        String[] strArr = new String[]{"hi","hello","welcome","so","bye"};
+        int[] nums = new int[10];
 
-        System.out.println("before = "+ Arrays.toString(strArr));
+        for (int i=0; i<nums.length; i++) {
+            nums[i] = i;
+        }
+        System.out.println(Arrays.toString(nums));
 
-        String[] newArr = new String[5];
-        System.arraycopy(strArr, 0, newArr, 0, strArr.length);
+        for (int i=0; i<nums.length; i++) {
+            int r = (int) (Math.random() * 10);
+            int temp = nums[0];
+            nums[0] = nums[r];
+            nums[r] = temp;
+        }
+        System.out.println(Arrays.toString(nums));
 
-        System.out.println("after = "+ Arrays.toString(newArr));
+
 
     }
 }
