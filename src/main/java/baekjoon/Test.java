@@ -1,25 +1,12 @@
 package baekjoon;
 
-import java.util.Arrays;
+import java.io.IOException;
 
 public class Test {
-    public static void main(String[] args) {
-        int[] nums = new int[10];
+    public static void main(String[] args) throws IOException {
 
-        for (int i=0; i<nums.length; i++) {
-            nums[i] = i;
-        }
-        System.out.println(Arrays.toString(nums));
-
-        for (int i=0; i<nums.length; i++) {
-            int r = (int) (Math.random() * 10);
-            int temp = nums[0];
-            nums[0] = nums[r];
-            nums[r] = temp;
-        }
-        System.out.println(Arrays.toString(nums));
-
-
-
+        String s = "abcdefg";
+        StringBuilder sb = new StringBuilder(s);
+        System.out.println(sb.reverse());
     }
 }
