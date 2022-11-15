@@ -5,16 +5,13 @@ import java.util.Queue;
 
 public class Test {
     public static void main(String[] args) {
-        Queue<Integer> queue = new LinkedList<Integer>();
-
-        queue.offer(1);
-        queue.offer(2);
-        queue.offer(3);
-        queue.offer(4);
-        queue.offer(5);
-
-        while(!queue.isEmpty()) {
-            System.out.println(queue.poll());
+        int start=0;
+        int end =0;
+        int[] arr = new int[9];
+        for(; start< end; start++, end--){
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
         }
 
     }
