@@ -1,38 +1,33 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Collections;
 
 // 분해합
+// + 최적화
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int n = Integer.parseInt(br.readLine());
-        int min = 1_000_001;
-        boolean isThereConstructor = false;
+        int constructor = 0;
 
-        for (int i = n; i >= 1; i--) {
-            String numStrs = String.valueOf(i);
-            char[] numChars = numStrs.toCharArray();
-            int temp = 0;
+        for (int i = 1; i <= n; i++) {
+            int num = i;
+            int sum = 0;
 
-            for (char num : numChars) { // 각 자리 더하기
-                temp += Integer.parseInt(String.valueOf(num));
+            while (num > 0) {
+                sum += num % 10;
+                num /= 10;
             }
 
-            int sum = temp + i;
+            sum += i;
 
-            if (sum == n && i < min) {
-                min = i;
-                isThereConstructor = true;
+            if (sum == n) {
+                constructor = i;
+                break;
             }
         }
 
-        if (isThereConstructor) {
-            System.out.println(min);
-        } else {
-            System.out.println(0);
-        }
+        System.out.println(constructor);
     }
 }
