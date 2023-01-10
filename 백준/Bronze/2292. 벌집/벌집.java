@@ -9,7 +9,7 @@ public class Main {
 
         final int N = Integer.parseInt(br.readLine());
         int cnt = 1; // 최소 방 카운트
-        int range = 2; // 최소 겹수
+        int range = 2; // 최소 범위
 
         if (N == 1) {
             System.out.print(1);
