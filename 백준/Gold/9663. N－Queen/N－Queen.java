@@ -15,14 +15,14 @@ import java.io.*;
 
 public class Main {
     private static int N;
-    private static int[] chessArr;
+    private static int[] arr;
     private static int cnt = 0;
     
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         
         N = Integer.parseInt(br.readLine());
-        chessArr = new int[N];
+        arr = new int[N];
         
         dfs(0);
         
@@ -38,21 +38,21 @@ public class Main {
         
         // logic
         for (int i=0; i<N; i++) {
-            chessArr[depth] = i;
+            arr[depth] = i;
             
-            if (isPossible(depth)) {
-                dfs(depth + 1);
-            }
+            if (isPossible(depth))
+                dfs(depth+1);
         }
     }
     
-    // 한 열에서 체스놓을수있는 칸인지 boolean 으로 반환하는 메소드
+    // 가능한 칸 인지 확인
     private static boolean isPossible(int col) {
+        //이전 열의 체스들 비교해서
         for (int i=0; i<col; i++) {
-            // 같은 행 제외 (십자 제외)
-            if (chessArr[col] == chessArr[i]) return false;
-            // 대각 제외
-            if (Math.abs(col-i) == Math.abs(chessArr[col] - chessArr[i])) return false;
+            //  같은 행이면 false
+            if (arr[col] == arr[i]) return false; // arr[col] = 현재 깊이의 체스의 행 위치
+            // 대각선 공격범위에 위치하면 false
+            if (Math.abs(col - i) == Math.abs(arr[col] - arr[i])) return false;
         }
         
         return true;
