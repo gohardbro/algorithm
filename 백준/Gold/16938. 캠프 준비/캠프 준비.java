@@ -1,10 +1,9 @@
 import java.io.*;
-import java.util.*;
 
 public class Main {
     private static int N, L, R, X;
-    private static int cnt = 0;
     private static int[] nums;
+    private static int cnt = 0;
     
     public static void main(String args[]) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,20 +20,19 @@ public class Main {
             nums[i] = Integer.parseInt(s[i]);
         }
         
-        Arrays.sort(nums);
-        
         sol(0, 0, 0, Integer.MAX_VALUE, Integer.MIN_VALUE);
         
         System.out.println(cnt);
     }
     
-    private static void sol(int index, int sum, int depth, int min, int max) {
-        if (depth >= 2) {
-            if (sum >= L && sum <= R && max - min >= X) cnt++;
+    private static void sol(int sum, int index, int depth, int min, int max) {
+        if (depth > N) return;
+        if (sum >= L && sum <= R && max - min >= X) {
+            cnt++;
         }
         
         for (int i=index; i<N; i++) {
-            sol(i+1, sum+nums[i], depth+1, Math.min(min, nums[i]), Math.max(max, nums[i]));
+            sol(sum + nums[i], i+1, depth+1, Math.min(min, nums[i]), Math.max(max, nums[i]));
         }
     }
 }
