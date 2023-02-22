@@ -26,9 +26,8 @@ public class Main {
     }
     
     private static void sol(int sum, int index, int depth, int min, int max) {
-        if (depth > N) return;
-        if (sum >= L && sum <= R && max - min >= X) {
-            cnt++;
+        if (depth >= 2) { // 두개 이상 골라야함
+            if (sum >= L && sum <= R && max - min >= X) cnt++;
         }
         
         for (int i=index; i<N; i++) {
