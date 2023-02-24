@@ -1,44 +1,81 @@
-// 알파벳
-/* 인접 문자를 모두 검사해서 방문하지 않은 문자만 방문하면서 카운팅한다.
- 더 이상 방문가능한 문자가 없으면 max 와 비교 저장한다*/
 import java.io.*;
 
 public class MyClass {
-    private static int cnt = 0;
-    private static int N;
-    private static int[] hp;
-    private static int[] weight;
-    private static boolean[] isVisited;
-    private static int max = Integer.MIN_VALUE;
+    private static int[][] arr;
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        N = Integer.parseInt(br.readLine());
-        hp = new int[N];
-        weight = new int[N];
-        isVisited = new boolean[N];
+        arr = new int[9][9];
 
-        for (int i=0; i<N; i++) {
+        for (int i=0; i<9; i++) {
             String[] s = br.readLine().split(" ");
-            hp[i] = Integer.parseInt(s[0]);
-            weight[i] = Integer.parseInt(s[1]);
+
+            for (int j=0; j<9; j++) {
+                arr[i][j] = Integer.parseInt(s[j]);
+            }
         }
 
-        sol(0);
-
-        System.out.println(cnt);
+        sol(0, 0);
     }
 
-    private static void sol(int depth) {
-        if (depth == N) {
-            if (cnt > max) max = cnt;
+    private static void sol(int row, int col) {
+        // 종료조건
+        if (row == 9) {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i=0; i<9; i++) {
+                for (int j=0; j<9; j++) {
+                    sb.append(arr[i][j]).append(" ");
+                }
+
+                sb.append("\n");
+            }
+
+            System.out.println(sb);
+
+            System.exit(0);
+        }
+
+        if (col == 9) {
+            sol(row + 1, 0);
             return;
         }
 
-        for (int i=0; i<N; i++) {
-            if (depth == i) continue;
+        // logic
+        if (arr[row][col] == 0) {
+
+            for (int i=1; i<=9; i++) {
+
+                if (isPossible(row, col, i)) {
+                    arr[row][col] = i;
+                    sol(row, col + 1);
+                }
+            }
+
+            arr[row][col] = 0;
+            return;
         }
+
+        sol(row, col + 1);
     }
 
+    private static boolean isPossible(int row, int col, int val) {
+
+        for (int i=0; i<9; i++) {
+            if (arr[row][i] == val) return false;
+            if (arr[i][col] == val) return false;
+        }
+
+        int blockStartRow = row / 3 * 3;
+        int blockStartCol = col / 3 * 3;
+
+        for (int i=0; i<3; i++) {
+            for (int j=0; j<3; j++) {
+                if (arr[blockStartRow + i][blockStartCol + j] == val) return false;
+            }
+        }
+
+        return true;
+    }
 }
