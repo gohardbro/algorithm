@@ -1,42 +1,35 @@
 import java.io.*;
 public class MyClass {
     private static int N;
-    private static int[] arr;
-    private static int cnt = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
         N = Integer.parseInt(br.readLine());
-        arr = new int[N];
 
-        dfs(0);
-
-        System.out.println(cnt);
+        sol("");
     }
 
-    private static void dfs(int depth) {
+    private static void sol(String str) {
         // 종료조건
-        if (depth == N) {
-            cnt++;
-            return;
+        if (str.length() == N) {
+            System.out.println(str);
+            System.exit(0);
         }
 
         // logic
-        for (int i=0; i<N; i++) {
-            arr[depth] = i;
-
-            if (isPossible(depth))
-                dfs(depth+1);
-        }
+        for (int i=1; i<=3; i++)
+            if (isPossible(str + i)) sol(str + i);
     }
 
-    private static boolean isPossible(int col) {
-        for (int i=0; i<col; i++) {
-            if (arr[col] == arr[i]) return false;
-            if (Math.abs(col - i) == Math.abs(arr[col] - arr[i])) return false;
+    private static boolean isPossible(String str) {
+        for(int i=1; i<=str.length()/2; i++) {
+            String left = str.substring(str.length() - i * 2, str.length() - i);
+            String right = str.substring(str.length() - i);
+            if(left.equals(right)) return false;
         }
-
         return true;
+
     }
 }
