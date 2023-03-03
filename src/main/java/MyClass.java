@@ -1,35 +1,61 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class MyClass {
-    private static int N;
+    private static char[][] block;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        final int N = Integer.parseInt(br.readLine());
+        block = new char[N][N];
+
+        sol(N);
+
         StringBuilder sb = new StringBuilder();
 
-        N = Integer.parseInt(br.readLine());
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                sb.append(block[i][j]);
+            }
 
-        sol("");
-    }
-
-    private static void sol(String str) {
-        // 종료조건
-        if (str.length() == N) {
-            System.out.println(str);
-            System.exit(0);
+            sb.append("\n");
         }
 
-        // logic
-        for (int i=1; i<=3; i++)
-            if (isPossible(str + i)) sol(str + i);
+        System.out.println(sb);
     }
 
-    private static boolean isPossible(String str) {
-        for(int i=1; i<=str.length()/2; i++) {
-            String left = str.substring(str.length() - i * 2, str.length() - i);
-            String right = str.substring(str.length() - i);
-            if(left.equals(right)) return false;
+    private static void sol(int N) {
+        int x = 0;
+        int y = 0;
+        boolean isBlanck = false;
+        sol(x, y, N, isBlanck);
+    }
+
+    private static void sol(int x, int y, int N, boolean isBlanck) {
+        if (isBlanck) {
+            for (int i = x; i < x + N; i++) {
+                for (int j = y; j < y + N; j++) {
+                    block[i][j] = ' ';
+                }
+            }
+            return;
         }
-        return true;
+
+        if (N == 1) {
+            block[x][y] = '*';
+            return;
+        }
+
+        int size = N / 3;
+        int cnt = 0;
+        for (int i = x; i < x + N; i += size) {
+            for (int j = y; j < y + N; j += size) {
+                cnt++;
+                sol(i, j, size, cnt == 5);
+            }
+        }
 
     }
 }
