@@ -1,61 +1,46 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+import java.io.*;
 
 public class MyClass {
-    private static char[][] block;
+    private static int N;
+    private static int[] arr;
+    private static int cnt = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        final int N = Integer.parseInt(br.readLine());
-        block = new char[N][N];
+        N = Integer.parseInt(br.readLine());
+        arr = new int[N];
 
-        sol(N);
+        dfs(0);
 
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                sb.append(block[i][j]);
-            }
-
-            sb.append("\n");
-        }
-
-        System.out.println(sb);
+        System.out.println(cnt);
     }
 
-    private static void sol(int N) {
-        int x = 0;
-        int y = 0;
-        boolean isBlanck = false;
-        sol(x, y, N, isBlanck);
-    }
-
-    private static void sol(int x, int y, int N, boolean isBlanck) {
-        if (isBlanck) {
-            for (int i = x; i < x + N; i++) {
-                for (int j = y; j < y + N; j++) {
-                    block[i][j] = ' ';
-                }
-            }
+    private static void dfs(int depth) {
+        // 종료조건
+        if (depth == N) {
+            cnt++;
             return;
         }
 
-        if (N == 1) {
-            block[x][y] = '*';
-            return;
+        // logic
+        for (int i=0; i<N; i++) {
+            arr[depth] = i;
+
+            if (isPossible(depth))
+                dfs(depth+1);
+        }
+    }
+
+    private static boolean isPossible(int col) {
+        for (int i=0; i<col; i++) {
+            //  같은 행이면 false
+            if (arr[col] == arr[i]) return false;
+            // 대각선 공격범위에 위치하면 false
+            if (Math.abs(col - i) == Math.abs(arr[col] - arr[i])) return false;
         }
 
-        int size = N / 3;
-        int cnt = 0;
-        for (int i = x; i < x + N; i += size) {
-            for (int j = y; j < y + N; j += size) {
-                cnt++;
-                sol(i, j, size, cnt == 5);
-            }
-        }
-
+        return true;
     }
 }
