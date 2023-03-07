@@ -1,78 +1,46 @@
-import java.io.*;
-import java.util.*;
-// 치킨집을 M 개만큼 고를때마다 모든 집의 치킨거리를 구하고 그 값들을 더한 값을 min 과 비교 저장
-public class MyClass {
-    private static int N, M;
-    private static final List<String> houseCoordinate = new ArrayList<>();
-    private static final List<String> chickenCoordinate = new ArrayList<>();
-    private static String[] pickedChicken;
-    private static boolean[] isVisited;
-    private static int min = Integer.MAX_VALUE;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
+// 한수
+public class MyClass {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
 
-        String[] s = br.readLine().split(" ");
-        N = Integer.parseInt(s[0]);
-        M = Integer.parseInt(s[1]);
-        pickedChicken = new String[M];
+        System.out.println(check(n));
+    }
 
-        // 각 좌표 저장
-        for (int i=0; i<N; i++) {
-            s = br.readLine().split(" ");
+    static int check(int n) {
 
-            for (int j=0; j<N; j++) {
-                if (s[j].equals("1")) { // 집일경우
-                    houseCoordinate.add(i+1 + "," + (j+1));
-                } else if (s[j].equals("2")) { // 치킨집 경우
-                    chickenCoordinate.add(i+1 + "," + (j+1));
-                }
+        int cnt = 0;
+        for (int i=1; i<=n; i++) {
+
+            ArrayList<Integer> temp = new ArrayList<>();
+            int no = i;
+            if (no < 100) {
+                cnt = no;
             }
-        }
-
-        isVisited = new boolean[chickenCoordinate.size()];
-
-        sol(0, 0);
-
-        System.out.println(min);
-    }
-
-    private static void sol(int index, int depth) {
-        // 종료조건
-        if (depth == M) {
-            int result = calCityDistance();
-            if (result < min) min = result;
-            return;
-        }
-
-        // logic
-        for (int i=index; i<chickenCoordinate.size(); i++) {
-            if (isVisited[i]) continue;
-
-            isVisited[i] = true;
-            pickedChicken[depth] = chickenCoordinate.get(i);
-            sol(i+1, depth+1);
-            isVisited[i] = false;
-        }
-    }
-
-    // 도시의 치킨거리 반환
-    private static int calCityDistance() {
-        int cityDistance = 0; // 도시의 치킨거리
-
-        for (String s : houseCoordinate) {
-            String[] h = s.split(",");
-            int minDistance = Integer.MAX_VALUE; //치킨집과의 가장최소거리가 그 집의 치킨거리
-
-            for (int j = 0; j < M; j++) {
-                String[] p = pickedChicken[j].split(",");
-                int distance = Math.abs(Integer.parseInt(h[0]) - Integer.parseInt(p[0])) + Math.abs(Integer.parseInt(h[1]) - Integer.parseInt(p[1]));
-
-                if (distance < minDistance) minDistance = distance;
+            while (no>0) {
+                int remainder = no % 10;
+                temp.add(remainder);
+                no /= 10;
             }
 
-            cityDistance += minDistance;
+            Integer[] gap = new Integer[temp.size()-1];
+            for (int k=0; k<temp.size()-1; k++) {
+                gap[k] = temp.get(k) - temp.get(k+1);
+            }
+
+            boolean isCnt = false;
+            for (int l=0; l<gap.length-1; l++) {
+                isCnt = gap[l + 1] != null && gap[l].equals(gap[l + 1]);
+            }
+            if (isCnt)
+                cnt++;
         }
-        return cityDistance;
+        return cnt;
     }
+
 }
