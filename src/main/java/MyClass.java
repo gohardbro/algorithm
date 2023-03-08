@@ -1,46 +1,77 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.StringTokenizer;
 
-// 한수
+// 병합정렬
 public class MyClass {
+
+    static int[] A, tmp;
+    static int cnt = 0;
+    static int result = -1;
+    static int K;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int n = Integer.parseInt(br.readLine());
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        System.out.println(check(n));
+        int N = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
+
+        st = new StringTokenizer(br.readLine());
+
+        A = new int[N];
+        for(int i = 0; i < N; i++) {
+            A[i] = Integer.parseInt(st.nextToken());
+        }
+        tmp = new int[N];
+        merge_sort(A, 0, N - 1);
+        System.out.println(result);
+
     }
 
-    static int check(int n) {
-
-        int cnt = 0;
-        for (int i=1; i<=n; i++) {
-
-            ArrayList<Integer> temp = new ArrayList<>();
-            int no = i;
-            if (no < 100) {
-                cnt = no;
-            }
-            while (no>0) {
-                int remainder = no % 10;
-                temp.add(remainder);
-                no /= 10;
-            }
-
-            Integer[] gap = new Integer[temp.size()-1];
-            for (int k=0; k<temp.size()-1; k++) {
-                gap[k] = temp.get(k) - temp.get(k+1);
-            }
-
-            boolean isCnt = false;
-            for (int l=0; l<gap.length-1; l++) {
-                isCnt = gap[l + 1] != null && gap[l].equals(gap[l + 1]);
-            }
-            if (isCnt)
-                cnt++;
+    public static void merge_sort(int[] A, int p, int r) {
+        if (cnt > K) return ;
+        if (p < r) {
+            int q = (p + r) / 2;
+            merge_sort(A, p, q);
+            merge_sort(A, q + 1, r);
+            merge(A, p, q, r);
         }
-        return cnt;
+    }
+
+    public static void merge(int[] A, int p, int q, int r) {
+        int i = p;
+        int j = q + 1;
+        int t = 0;
+
+        while (i <= q && j <= r) {
+            if(A[i] <= A[j]) {
+                tmp[t] = A[i];
+                i++;
+            }else {
+                tmp[t] = A[j];
+                j++;
+            }
+            t++;
+        }
+
+        while (i <= q)
+            tmp[t++] = A[i++];
+
+        while (j <= r)
+            tmp[t++] = A[j++];
+
+        i = p;
+        t = 0;
+        while (i <= r) {
+            cnt++;
+            if (cnt == K) {
+                result = tmp[t];
+                break;
+            }
+            A[i++] = tmp[t++];
+        }
     }
 
 }
