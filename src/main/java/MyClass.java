@@ -1,77 +1,61 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.io.*;
+import java.util.*;
 
-// 병합정렬
 public class MyClass {
-
-    static int[] A, tmp;
-    static int cnt = 0;
-    static int result = -1;
-    static int K;
+    private static int L, C;
+    private static String[] strs;
+    private static String[] picked;
+    private static boolean[] isVisited;
+    private static int vowelCnt = 0;
+    private static int consonantCnt = 0;
+    private static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
+        String[] s = br.readLine().split(" ");
+        L = Integer.parseInt(s[0]);
+        C = Integer.parseInt(s[1]);
+        strs = new String[C];
+        picked = new String[L];
+        isVisited = new boolean[C];
 
-        st = new StringTokenizer(br.readLine());
-
-        A = new int[N];
-        for(int i = 0; i < N; i++) {
-            A[i] = Integer.parseInt(st.nextToken());
+        s = br.readLine().split(" ");
+        for (int i=0; i<C; i++) {
+            strs[i] = s[i];
         }
-        tmp = new int[N];
-        merge_sort(A, 0, N - 1);
-        System.out.println(result);
 
+        Arrays.sort(strs);
+        sol(0, 0);
+
+        System.out.println(sb);
     }
 
-    public static void merge_sort(int[] A, int p, int r) {
-        if (cnt > K) return ;
-        if (p < r) {
-            int q = (p + r) / 2;
-            merge_sort(A, p, q);
-            merge_sort(A, q + 1, r);
-            merge(A, p, q, r);
-        }
-    }
-
-    public static void merge(int[] A, int p, int q, int r) {
-        int i = p;
-        int j = q + 1;
-        int t = 0;
-
-        while (i <= q && j <= r) {
-            if(A[i] <= A[j]) {
-                tmp[t] = A[i];
-                i++;
-            }else {
-                tmp[t] = A[j];
-                j++;
+    private static void sol(int index, int depth) {
+        // 종료조건
+        if (depth == L) {
+            if (vowelCnt > 0 && consonantCnt > 1) {
+                for (String s : picked) {
+                    sb.append(s);
+                }
+                sb.append("\n");
             }
-            t++;
+
+            return;
         }
 
-        while (i <= q)
-            tmp[t++] = A[i++];
+        for (int i=index; i<C; i++) {
+            if (isVisited[i]) continue;
 
-        while (j <= r)
-            tmp[t++] = A[j++];
+            if (strs[i].equals("a") || strs[i].equals("e") || strs[i].equals("i") || strs[i].equals("o") || strs[i].equals("u")) vowelCnt++;
+            else consonantCnt++;
+            picked[depth] = strs[i];
+            isVisited[i] = true;
+            sol(i+1, depth+1);
+            isVisited[i] = false;
+            if (strs[i].equals("a") || strs[i].equals("e") || strs[i].equals("i") || strs[i].equals("o") || strs[i].equals("u")) vowelCnt--;
+            else consonantCnt--;
 
-        i = p;
-        t = 0;
-        while (i <= r) {
-            cnt++;
-            if (cnt == K) {
-                result = tmp[t];
-                break;
-            }
-            A[i++] = tmp[t++];
         }
     }
-
 }
