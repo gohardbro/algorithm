@@ -1,61 +1,53 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class MyClass {
-    private static int L, C;
-    private static String[] strs;
-    private static String[] picked;
-    private static boolean[] isVisited;
-    private static int vowelCnt = 0;
-    private static int consonantCnt = 0;
-    private static StringBuilder sb = new StringBuilder();
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
-        String[] s = br.readLine().split(" ");
-        L = Integer.parseInt(s[0]);
-        C = Integer.parseInt(s[1]);
-        strs = new String[C];
-        picked = new String[L];
-        isVisited = new boolean[C];
+        int t = Integer.parseInt(br.readLine());
 
-        s = br.readLine().split(" ");
-        for (int i=0; i<C; i++) {
-            strs[i] = s[i];
-        }
+        for (int i = 0; i < t; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            int n = Integer.parseInt(st.nextToken());
+            int m = Integer.parseInt(st.nextToken());
 
-        Arrays.sort(strs);
-        sol(0, 0);
+            st = new StringTokenizer(br.readLine(), " ");
+            Queue<int[]> queue = new LinkedList<>();
+            ArrayList<Integer> list = new ArrayList<>();
 
-        System.out.println(sb);
-    }
+            for (int j = 0; j < n; j++) {
+                int status = Integer.parseInt(st.nextToken());
 
-    private static void sol(int index, int depth) {
-        // 종료조건
-        if (depth == L) {
-            if (vowelCnt > 0 && consonantCnt > 1) {
-                for (String s : picked) {
-                    sb.append(s);
-                }
-                sb.append("\n");
+                list.add(status);
+                queue.offer(new int[] {j, status});
             }
 
-            return;
+            int setSize = list.size();
+            Integer[] nums = list.toArray(new Integer[setSize]);
+            int cnt = 0;
+
+            while (!queue.isEmpty()) {
+                Arrays.sort(nums);
+
+                if (queue.peek()[1] < nums[nums.length-1]) {
+                    queue.offer(queue.poll());
+                } else {
+                    int[] current = queue.poll();
+                    nums[nums.length-1] = 0;
+                    cnt++;
+
+                    if (current[0] == m)
+                        break;
+                }
+            }
+
+            sb.append(cnt).append("\n");
         }
 
-        for (int i=index; i<C; i++) {
-            if (isVisited[i]) continue;
-
-            if (strs[i].equals("a") || strs[i].equals("e") || strs[i].equals("i") || strs[i].equals("o") || strs[i].equals("u")) vowelCnt++;
-            else consonantCnt++;
-            picked[depth] = strs[i];
-            isVisited[i] = true;
-            sol(i+1, depth+1);
-            isVisited[i] = false;
-            if (strs[i].equals("a") || strs[i].equals("e") || strs[i].equals("i") || strs[i].equals("o") || strs[i].equals("u")) vowelCnt--;
-            else consonantCnt--;
-
-        }
+        System.out.println(sb);
     }
 }
