@@ -1,45 +1,35 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Stack;
+import java.util.LinkedList;
+import java.util.StringJoiner;
+import java.util.StringTokenizer;
 
+// 요세푸스 문제
+// + 최적화
 public class MyClass {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int n = Integer.parseInt(br.readLine());
-        String cmd = br.readLine();
-        Stack<Double> stack = new Stack<>();
-        double[] nums = new double[n];
+        int n = Integer.parseInt(st.nextToken());
+        int k = Integer.parseInt(st.nextToken());
 
-        for (int i=0; i<n; i++) {
-            nums[i] = Integer.parseInt(br.readLine());
+        LinkedList<Integer> list = new LinkedList<>();
+        for (int i = 1; i <= n; i++) {
+            list.add(i);
         }
 
-        for (int i=0; i<cmd.length(); i++) {
-            if (cmd.charAt(i) >= 'A') {// 알파벳이라면 이라는 뜻
-                stack.push(nums[cmd.charAt(i) - 'A']);
-            } else {
-                double rightNum = stack.pop();
-                double leftNum = stack.pop();
+        int index = 0;
+        StringJoiner sj = new StringJoiner(", ");
 
-                switch (cmd.charAt(i)) {
-                    case '+':
-                        stack.push(leftNum + rightNum);
-                        break;
-                    case '-':
-                        stack.push(leftNum - rightNum);
-                        break;
-                    case '*':
-                        stack.push(leftNum * rightNum);
-                        break;
-                    case '/':
-                        stack.push(leftNum / rightNum);
-                        break;
-                }
-            }
+        // LinkedList 의 index 요소만 삭제, 다음 숫자가 리스트 끝넘어가면 다시 head 부터 시작하도록 % list.size() 함
+        while (!list.isEmpty()) {
+            index += k - 1;
+            index %= list.size();
+            sj.add(Integer.toString(list.remove(index)));
         }
 
-        System.out.printf("%.2f",stack.pop());
+        System.out.println("<" + sj + ">");
     }
 }
