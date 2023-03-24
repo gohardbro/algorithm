@@ -9,29 +9,31 @@ public class MyClass {
         StringBuilder sb = new StringBuilder();
 
         int n = Integer.parseInt(br.readLine());
-        HashMap<Integer, HashSet<String>> map = new HashMap<>();
+        HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
 
-        for (int i=0; i<n; i++) {
-            String s = br.readLine();
+        for (int i = 0; i < n; i++) {
+            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+            int x = Integer.parseInt(st.nextToken());
+            int y = Integer.parseInt(st.nextToken());
 
-            map.putIfAbsent(s.length(), new HashSet<>());
-            map.get(s.length()).add(s);
-            map.put(s.length(), map.get(s.length()));
+            map.putIfAbsent(x, new ArrayList<>());
+            map.get(x).add(y);
+            map.put(x, map.get(x));
         }
 
         Set<Integer> keySets = map.keySet();
-        int keySetsSize = keySets.size();
-        Integer[] keys = keySets.toArray(new Integer[keySetsSize]);
+        int keySize = keySets.size();
+        Integer[] keys = keySets.toArray(new Integer[keySize]);
         Arrays.sort(keys);
 
-        for (int key : keys) {
-            HashSet<String> strSets = map.get(key);
-            int strsLitSize = strSets.size();
-            String[] strs = strSets.toArray(new String[strsLitSize]);
-            Arrays.sort(strs);
+        for (Integer key : keys) {
+            ArrayList<Integer> values = map.get(key);
+            int arrListsize = values.size();
+            Integer[] integers = values.toArray(new Integer[arrListsize]);
+            Arrays.sort(integers);
 
-            for (String str : strs) {
-                sb.append(str).append("\n");
+            for (int no : integers) {
+                sb.append(key).append(" ").append(no).append("\n");
             }
         }
 
