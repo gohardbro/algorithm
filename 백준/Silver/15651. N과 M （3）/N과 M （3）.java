@@ -1,47 +1,38 @@
-// N과 M (3)
-/*
-1. 아이디어
-    - dfs로 탐색, logic : 다음 depth로 넘어갈때마다 동일하게 1 ~ N 까지 저장, 종료조건: depth == M
-2. 시간복잡도
-    - n^n
-3. 자료구조
-    - 결과값 저장 int[]
-*/
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class Main {
-    private static int N, M;
+    private static final StringBuilder sb = new StringBuilder();
     private static int[] arr;
-    private static StringBuilder sb = new StringBuilder();
-    
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        
-        String[] s = br.readLine().split(" ");
-        N = Integer.parseInt(s[0]);
-        M = Integer.parseInt(s[1]);
+
+        String[] input = br.readLine().split(" ");
+        final int N = Integer.parseInt(input[0]);
+        final int M = Integer.parseInt(input[1]);
         arr = new int[M];
-        
-        dfs(0);
-        
+
+        sol(N, M);
         System.out.println(sb);
     }
-    
-    private static void dfs(int depth) {
-        // 종료조건
+
+    public static void sol(int N, int M) {
+        sol(N, M, 0);
+    }
+
+    public static void sol(int N, int M, int depth) {
         if (depth == M) {
             for (int num : arr) {
                 sb.append(num).append(" ");
             }
-            
             sb.append("\n");
             return;
         }
-        
-        // logic
+
         for (int i=0; i<N; i++) {
             arr[depth] = i+1;
-            dfs(depth+1);
+            sol(N, M, depth+1);
         }
     }
 }
