@@ -2,24 +2,22 @@ import java.util.*;
 
 class Solution {
     public String[] solution(String[] players, String[] callings) {
-        Map<String, Integer> rankingMap = new HashMap<>();
+        Map<String, Integer> map = new HashMap<>();
         
         for (int i=0; i<players.length; i++) {
-            rankingMap.put(players[i], i);
+            map.put(players[i], i);
         }
         
         for (String calledPlayer : callings) {
-            // calling된 선수의 랭킹 가져오기
-            int playerRanking = rankingMap.get(calledPlayer);
-           
-            String front = players[playerRanking - 1];
+            int rank = map.get(calledPlayer);
+            String frontPlayer = players[rank-1];
             
-            rankingMap.replace(front, playerRanking);
-            players[playerRanking] = front;
-            
-            rankingMap.replace(calledPlayer, playerRanking-1);
-            players[playerRanking-1] = calledPlayer;
+            map.replace(frontPlayer, rank);
+            map.replace(calledPlayer, rank-1);
+            players[rank] = frontPlayer;
+            players[rank-1] = calledPlayer;
         }
+        
         return players;
     }
 }
