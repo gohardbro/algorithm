@@ -14,5 +14,7 @@ class Solution {
 
         // 위의 비교가 다 모두 ture라면 길이가 1 더 긴 participant 배열의 마지막 index가 정답
         return participant[participant.length-1];
+
+        // Map을 이용한 풀이도 가능
     }
 }
