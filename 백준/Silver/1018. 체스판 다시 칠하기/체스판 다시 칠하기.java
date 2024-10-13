@@ -1,26 +1,25 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
         
-        final int ROW = Integer.parseInt(st.nextToken());
-        final int COL = Integer.parseInt(st.nextToken());
-
-        int min = 64;
-
-        String[] board = new String[ROW];
-        for (int i = 0; i < ROW; i++) {
-            board[i] = br.readLine();
+        String[] s = br.readLine().split(" ");
+        int row = Integer.parseInt(s[0]);
+        int col = Integer.parseInt(s[1]);
+        String[] board = new String[row];
+        
+        for (int i = 0; i < row; i++) {
+            board[i] = br.readLine(); 
         }
 
-        for (int i = 0; i < ROW - 7; i++) {
-            for (int j = 0; j < COL - 7; j++) {
-                int cnt = calFillCnt(i, j, board);
+        int min = 64; 
+
+        for (int i = 0; i <= row - 8; i++) {
+            for (int j = 0; j <= col - 8; j++) {
+                int cnt = calCnt(i, j, board);
                 if (cnt < min) min = cnt;
             }
         }
@@ -28,7 +27,7 @@ public class Main {
         System.out.println(min);
     }
 
-    private static int calFillCnt(int startRow, int startCol, String[] board) {
+    private static int calCnt(int startRow, int stratCol, String[] board) {
         String[] ans = {"BWBWBWBW", "WBWBWBWB"};
         int cnt = 0;
 
@@ -36,11 +35,11 @@ public class Main {
             int row = startRow + i;
 
             for (int j = 0; j < 8; j++) {
-                int col = startCol + j;
+                int col = stratCol + j;
                 if (board[row].charAt(col) != ans[row%2].charAt(j)) cnt++;
             }
         }
-
-        return Integer.min(cnt, 64 - cnt);
+        
+        return Math.min(cnt, 64 - cnt);
     }
 }
